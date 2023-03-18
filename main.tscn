@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=3 uid="uid://ce17c81jacq53"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_whca7"]
+[ext_resource type="AudioStream" uid="uid://b6ccagwb5cpwp" path="res://test.wav" id="2_ae8ut"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_tcnva"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hvq88"]
+size = Vector2(32, 32)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_whca7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 250.0
+
+[node name="Menu" type="VBoxContainer" parent="."]
+offset_left = 403.483
+offset_top = 189.202
+offset_right = 812.483
+offset_bottom = 467.202
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 52
+text = "     CYBERFIRE"
+fit_content = true
+tab_size = 1
+
+[node name="Ip" type="LineEdit" parent="Menu"]
+layout_mode = 2
+placeholder_text = "Ip"
+alignment = 1
+
+[node name="Port" type="LineEdit" parent="Menu"]
+layout_mode = 2
+placeholder_text = "Port "
+alignment = 1
+
+[node name="Join" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Join Server"
+
+[node name="Host" type="Button" parent="Menu"]
+layout_mode = 2
+text = "Host Server (P2P)"
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+material_override = SubResource("ORMMaterial3D_tcnva")
+mesh = SubResource("PlaneMesh_hvq88")
+
+[node name="Intro_Audio" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(403.483, 189.202)
+stream = ExtResource("2_ae8ut")
+autoplay = true
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player_character/player_character.tscn")
+spawn_path = NodePath("..")
+
+[node name="OverWorldCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 16, 24)
+current = true
+
+[connection signal="pressed" from="Menu/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="Menu/Host" to="." method="_on_host_pressed"]
